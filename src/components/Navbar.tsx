@@ -11,7 +11,7 @@ export function Navbar({ autoPainMode, setAutoPainMode }: {
   const { language, toggleLanguage } = useLanguage();
   
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 py-4 px-4 border-b">
+    <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 py-4 px-4 border-b shadow-sm">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600 whitespace-nowrap">
@@ -25,10 +25,10 @@ export function Navbar({ autoPainMode, setAutoPainMode }: {
         </div>
         
         <Button 
-          variant="ghost" 
+          variant="outline" 
           size="sm" 
           onClick={toggleLanguage}
-          className="hover:bg-pink-100"
+          className="hover:bg-pink-100 border-2 hover:border-pink-300 transition-all duration-300 shadow-sm hover:shadow"
         >
           <Languages className="w-5 h-5 mr-2" />
           {language === 'zh' ? 'EN' : '中文'}

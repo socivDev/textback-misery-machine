@@ -158,7 +158,7 @@ export function TextCheck() {
             <Button 
               onClick={refreshContent}
               size="lg"
-              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-500 to-violet-500 hover:from-violet-500 hover:to-pink-500"
+              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-500 to-violet-500 hover:from-violet-500 hover:to-pink-500 shadow-lg hover:shadow-xl"
             >
               <RefreshCw className={`w-5 h-5 ${autoPainMode ? 'animate-spin' : 'animate-spin-slow'}`} />
               {language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}
