@@ -1,4 +1,3 @@
-
 type ContentType = {
   en: string;
   zh: string;
@@ -43,7 +42,7 @@ export const excuses: ContentType[] = [
   },
   {
     en: "They're in a tunnel with no service (the tunnel is called 'avoidance')",
-    zh: "他们在一个没有信号的隧道里（隧道名为"回避"）",
+    zh: '他们在一个没有信号的隧道里（隧道名为"回避"）',
   },
   {
     en: "Their message is stuck in the cloud, just like your relationship",
