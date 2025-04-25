@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { excuses, responses, fortunes } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Languages, GiftIcon, Fortune } from "lucide-react";
+import { RefreshCw, Languages, GiftIcon, Cookie } from "lucide-react"; // Replace Fortune with Cookie
 import { useLanguage } from "@/context/LanguageContext";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
