@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
-import { excuses, responses, fortunes } from "@/data/excuses";
+import { excuses, responses } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Languages, GiftIcon, Cookie } from "lucide-react"; // Replace Fortune with Cookie
+import { RefreshCw, GiftIcon } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { toast } from "@/hooks/use-toast";
+import { Navbar } from "./Navbar";
+import { FortuneCookie } from "./FortuneCookie";
+import { ShareInstructions } from "./ShareInstructions";
 
 export function TextCheck() {
-  const { language, toggleLanguage } = useLanguage();
+  const { language } = useLanguage();
   const [excuse, setExcuse] = useState(() => excuses[Math.floor(Math.random() * excuses.length)]);
   const [response, setResponse] = useState(() => responses[Math.floor(Math.random() * responses.length)]);
-  const [fortune, setFortune] = useState(() => fortunes[Math.floor(Math.random() * fortunes.length)]);
   const [autoPainMode, setAutoPainMode] = useState(false);
   const [streak, setStreak] = useState(0);
-  const [showFortune, setShowFortune] = useState(false);
   const [refreshCount, setRefreshCount] = useState(0);
 
   // Initialize streak from localStorage and update it
@@ -113,28 +112,10 @@ export function TextCheck() {
       // Normal random content
       const newExcuse = excuses[Math.floor(Math.random() * excuses.length)];
       const newResponse = responses[Math.floor(Math.random() * responses.length)];
-      const newFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
       
       setExcuse(newExcuse);
       setResponse(newResponse);
-      setFortune(newFortune);
-      setShowFortune(false);
     }
-  };
-
-  const takeScreenshot = () => {
-    // This is just a placeholder - in a real implementation
-    // we would use html2canvas or a similar library to capture the content
-    toast({
-      title: language === 'zh' ? '截图功能' : 'Screenshot Feature',
-      description: language === 'zh' ? 
-        '截图功能将在完整版本中提供' : 
-        'Screenshot feature will be available in the full version',
-    });
-  };
-
-  const toggleFortune = () => {
-    setShowFortune(prev => !prev);
   };
 
   const getStreakBadge = () => {
@@ -145,81 +126,66 @@ export function TextCheck() {
   };
 
   return (
-    <div className="space-y-8 text-center max-w-lg mx-auto px-4">
-      <div className="flex justify-between items-center w-full absolute top-4 left-0 right-0 px-4">
-        <div className="flex items-center">
-          <span className="mr-2 text-sm text-gray-600">
-            {language === 'zh' ? '自动痛苦模式' : 'Auto-Pain Mode'}:
-          </span>
-          <Switch 
-            checked={autoPainMode} 
-            onCheckedChange={setAutoPainMode}
-            className="data-[state=checked]:bg-pink-500"
-          />
-        </div>
-        
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={toggleLanguage}
-          className="hover:bg-pink-100"
-        >
-          <Languages className="w-5 h-5 mr-2" />
-          {language === 'zh' ? 'EN' : '中文'}
-        </Button>
-      </div>
+    <div className="min-h-screen flex flex-col font-[Poppins] bg-gradient-to-b from-white to-pink-50">
+      <Navbar autoPainMode={autoPainMode} setAutoPainMode={setAutoPainMode} />
       
-      {/* Streak counter */}
-      <div className="absolute top-16 left-0 right-0 flex justify-center">
-        <Badge variant="outline" className="bg-gradient-to-r from-pink-200 to-violet-200 px-3 py-1">
-          <GiftIcon className="w-4 h-4 mr-1" />
-          {language === 'zh' ? `连续: ${streak} 天` : `Streak: ${streak} days`}
-          <span className="ml-2 text-xs">({getStreakBadge()})</span>
-        </Badge>
+      <div className="flex-1 pt-24 pb-12 px-4">
+        <div className="space-y-8 text-center max-w-2xl mx-auto">
+          {/* Streak counter */}
+          <div className="flex justify-center">
+            <Badge variant="outline" className="bg-gradient-to-r from-pink-200 to-violet-200 px-3 py-1">
+              <GiftIcon className="w-4 h-4 mr-1" />
+              {language === 'zh' ? `连续: ${streak} 天` : `Streak: ${streak} days`}
+              <span className="ml-2 text-xs">({getStreakBadge()})</span>
+            </Badge>
+          </div>
+
+          <div className={`space-y-6 animate-fade-in ${autoPainMode ? 'animate-pulse' : ''}`}>
+            <div className={`text-8xl sm:text-9xl ${autoPainMode ? 'animate-bounce' : 'animate-bounce-slow'}`}>
+              {response.emoji}
+            </div>
+            
+            <h2 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-pink-500 to-violet-500 text-transparent bg-clip-text transition-all duration-300">
+              {response.text[language]}
+            </h2>
+            
+            <p className="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed max-w-xl mx-auto">
+              {excuse[language]}
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={refreshContent}
+              size="lg"
+              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-500 to-violet-500 hover:from-violet-500 hover:to-pink-500"
+            >
+              <RefreshCw className={`w-5 h-5 ${autoPainMode ? 'animate-spin' : 'animate-spin-slow'}`} />
+              {language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}
+            </Button>
+            
+            <FortuneCookie />
+          </div>
+          
+          <ShareInstructions />
+        </div>
       </div>
 
-      <div className={`space-y-4 animate-fade-in ${autoPainMode ? 'animate-pulse' : ''}`}>
-        <div className={`text-8xl sm:text-9xl ${autoPainMode ? 'animate-bounce' : 'animate-bounce-slow'}`}>
-          {showFortune ? "🥠" : response.emoji}
+      <footer className="w-full py-8 px-4 border-t bg-white/50 backdrop-blur-sm">
+        <div className="max-w-2xl mx-auto text-center space-y-4">
+          <a
+            href="https://example.com/store"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-100 to-violet-100 hover:from-pink-200 hover:to-violet-200 text-gray-700 font-medium transition-all hover:scale-105"
+          >
+            {language === 'zh' ? '需要心理咨询？或者T恤？→' : 'Need therapy? Or a t-shirt? →'}
+          </a>
+          <p className="text-sm text-gray-500">
+            {language === 'zh' ? '自2025年起每日提供被拒绝的痛苦' : 'Daily doses of rejection since 2025'}
+          </p>
         </div>
-        
-        <h2 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-pink-500 to-violet-500 text-transparent bg-clip-text transition-all duration-300">
-          {showFortune ? 
-            (language === 'zh' ? '今日运势：' : 'Fortune says:') : 
-            response.text[language]
-          }
-        </h2>
-        
-        <p className="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed">
-          {showFortune ? fortune[language] : excuse[language]}
-        </p>
-      </div>
-      
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button 
-          onClick={refreshContent}
-          size="lg"
-          className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-500 to-violet-500 hover:from-violet-500 hover:to-pink-500"
-        >
-          <RefreshCw className={`w-5 h-5 ${autoPainMode ? 'animate-spin' : 'animate-spin-slow'}`} />
-          {language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}
-        </Button>
-        
-        <Button
-          onClick={toggleFortune}
-          size="lg"
-          variant="outline"
-          className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:border-pink-300 border-2 hover:scale-110 transition-transform"
-        >
-          {language === 'zh' ? '打开幸运饼干' : 'Fortune Cookie'}
-        </Button>
-      </div>
-      
-      <ToggleGroup type="single" className="justify-center mt-6">
-        <ToggleGroupItem value="screenshot" onClick={takeScreenshot}>
-          {language === 'zh' ? '截图分享' : 'Screenshot & Share'}
-        </ToggleGroupItem>
-      </ToggleGroup>
+      </footer>
     </div>
   );
 }
