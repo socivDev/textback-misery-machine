@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { excuses, responses } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, GiftIcon } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Navbar } from "./Navbar";
 import { FortuneCookie } from "./FortuneCookie";
 import { ShareInstructions } from "./ShareInstructions";
+import { StreakCounter } from "./StreakCounter";
 
 export function TextCheck() {
   const { language } = useLanguage();
@@ -118,30 +118,18 @@ export function TextCheck() {
     }
   };
 
-  const getStreakBadge = () => {
-    if (streak >= 10) return language === 'zh' ? '幽灵猎人' : 'Ghost Hunter';
-    if (streak >= 5) return language === 'zh' ? '被遗忘专家' : 'Forgotten Expert';
-    if (streak >= 3) return language === 'zh' ? '坚持等待者' : 'Persistent Waiter';
-    return language === 'zh' ? '新手等待者' : 'Novice Waiter';
-  };
-
   return (
     <div className="min-h-screen flex flex-col font-[Poppins] bg-gradient-to-b from-white to-pink-50">
       <Navbar autoPainMode={autoPainMode} setAutoPainMode={setAutoPainMode} />
       
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="space-y-8 text-center max-w-2xl mx-auto">
-          {/* Streak counter */}
           <div className="flex justify-center">
-            <Badge variant="outline" className="bg-gradient-to-r from-pink-200 to-violet-200 px-3 py-1">
-              <GiftIcon className="w-4 h-4 mr-1" />
-              {language === 'zh' ? `连续: ${streak} 天` : `Streak: ${streak} days`}
-              <span className="ml-2 text-xs">({getStreakBadge()})</span>
-            </Badge>
+            <StreakCounter streak={streak} />
           </div>
 
           <div className={`space-y-6 animate-fade-in ${autoPainMode ? 'animate-pulse' : ''}`}>
-            <div className={`text-8xl sm:text-9xl ${autoPainMode ? 'animate-bounce' : 'animate-bounce-slow'}`}>
+            <div className={`text-8xl sm:text-9xl transition-all duration-500 ${autoPainMode ? 'animate-bounce scale-110' : 'animate-bounce-slow hover:scale-105'}`}>
               {response.emoji}
             </div>
             
@@ -158,7 +146,7 @@ export function TextCheck() {
             <Button 
               onClick={refreshContent}
               size="lg"
-              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-500 to-violet-500 hover:from-violet-500 hover:to-pink-500 shadow-lg hover:shadow-xl"
+              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-600 to-violet-600 hover:from-violet-600 hover:to-pink-600 shadow-lg hover:shadow-xl border-2 border-white/20"
             >
               <RefreshCw className={`w-5 h-5 ${autoPainMode ? 'animate-spin' : 'animate-spin-slow'}`} />
               {language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}
@@ -171,13 +159,13 @@ export function TextCheck() {
         </div>
       </div>
 
-      <footer className="w-full py-8 px-4 border-t bg-white/50 backdrop-blur-sm">
+      <footer className="w-full py-8 px-4 bg-gradient-to-t from-white/80 to-transparent backdrop-blur-sm border-t">
         <div className="max-w-2xl mx-auto text-center space-y-4">
           <a
             href="https://example.com/store"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-100 to-violet-100 hover:from-pink-200 hover:to-violet-200 text-gray-700 font-medium transition-all hover:scale-105"
+            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-100 to-violet-100 hover:from-pink-200 hover:to-violet-200 text-gray-700 font-medium transition-all hover:scale-105 shadow-sm hover:shadow-md"
           >
             {language === 'zh' ? '需要心理咨询？或者T恤？→' : 'Need therapy? Or a t-shirt? →'}
           </a>
