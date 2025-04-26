@@ -1,13 +1,17 @@
+
 import { useState, useEffect } from "react";
 import { excuses, responses } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, ZapOff, Zap } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { Navbar } from "./Navbar";
 import { FortuneCookie } from "./FortuneCookie";
 import { ShareInstructions } from "./ShareInstructions";
 import { StreakCounter } from "./StreakCounter";
+import { MusicPlayer } from "./MusicPlayer";
+import { MemesViewer } from "./MemesViewer";
+import { Newsletter } from "./Newsletter";
 
 export function TextCheck() {
   const { language } = useLanguage();
@@ -16,6 +20,7 @@ export function TextCheck() {
   const [autoPainMode, setAutoPainMode] = useState(false);
   const [streak, setStreak] = useState(0);
   const [refreshCount, setRefreshCount] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Initialize streak from localStorage and update it
   useEffect(() => {
@@ -93,34 +98,42 @@ export function TextCheck() {
   }, [refreshCount, language]);
 
   const refreshContent = () => {
+    // Start animation
+    setIsAnimating(true);
+    
     // Update refresh count
     setRefreshCount(prev => prev + 1);
     
-    // Special rewards for frequent refreshers
-    if (refreshCount === 25) {
-      // Special response (rare "yes" joke)
-      setResponse({
-        text: { en: "YES! (just kidding)", zh: "有！（开玩笑的）" },
-        emoji: "🤡"
-      });
+    setTimeout(() => {
+      // Special rewards for frequent refreshers
+      if (refreshCount === 25) {
+        // Special response (rare "yes" joke)
+        setResponse({
+          text: { en: "YES! (just kidding)", zh: "有！（开玩笑的）" },
+          emoji: "🤡"
+        });
+        
+        setTimeout(() => {
+          // Reset after showing the joke
+          setResponse(responses[Math.floor(Math.random() * responses.length)]);
+        }, 2000);
+      } else {
+        // Normal random content
+        const newExcuse = excuses[Math.floor(Math.random() * excuses.length)];
+        const newResponse = responses[Math.floor(Math.random() * responses.length)];
+        
+        setExcuse(newExcuse);
+        setResponse(newResponse);
+      }
       
-      setTimeout(() => {
-        // Reset after showing the joke
-        setResponse(responses[Math.floor(Math.random() * responses.length)]);
-      }, 2000);
-    } else {
-      // Normal random content
-      const newExcuse = excuses[Math.floor(Math.random() * excuses.length)];
-      const newResponse = responses[Math.floor(Math.random() * responses.length)];
-      
-      setExcuse(newExcuse);
-      setResponse(newResponse);
-    }
+      // End animation
+      setIsAnimating(false);
+    }, 300);
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-[Poppins] bg-gradient-to-b from-white to-pink-50">
-      <Navbar autoPainMode={autoPainMode} setAutoPainMode={setAutoPainMode} />
+    <div className="min-h-screen flex flex-col font-[Poppins] bg-gradient-to-b from-pink-50 to-violet-100">
+      <Navbar autoPainMode={autoPainMode} setAutoPainMode={setAutoPainMode} streak={streak} />
       
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="space-y-8 text-center max-w-2xl mx-auto">
@@ -128,16 +141,16 @@ export function TextCheck() {
             <StreakCounter streak={streak} />
           </div>
 
-          <div className={`space-y-6 animate-fade-in ${autoPainMode ? 'animate-pulse' : ''}`}>
-            <div className={`text-8xl sm:text-9xl transition-all duration-500 ${autoPainMode ? 'animate-bounce scale-110' : 'animate-bounce-slow hover:scale-105'}`}>
+          <div className={`space-y-6 animate-fade-in ${isAnimating ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
+            <div className={`text-8xl sm:text-9xl transition-all duration-500 hover:scale-110 ${autoPainMode ? 'animate-bounce scale-110' : 'animate-[bounce_4s_ease-in-out_infinite]'}`}>
               {response.emoji}
             </div>
             
-            <h2 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-pink-500 to-violet-500 text-transparent bg-clip-text transition-all duration-300">
+            <h2 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-pink-600 to-violet-600 text-transparent bg-clip-text transition-all duration-300 hover:scale-105 transform">
               {response.text[language]}
             </h2>
             
-            <p className="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed max-w-xl mx-auto">
+            <p className="text-xl sm:text-2xl text-gray-700 font-medium leading-relaxed max-w-xl mx-auto">
               {excuse[language]}
             </p>
           </div>
@@ -146,10 +159,15 @@ export function TextCheck() {
             <Button 
               onClick={refreshContent}
               size="lg"
-              className="text-lg font-semibold px-8 py-6 h-auto gap-2 hover:scale-110 transition-transform bg-gradient-to-r from-pink-600 to-violet-600 hover:from-violet-600 hover:to-pink-600 shadow-lg hover:shadow-xl border-2 border-white/20"
+              className="text-xl font-bold px-10 py-8 h-auto gap-3 hover:scale-105 transform transition-transform bg-gradient-to-r from-pink-600 to-violet-600 hover:from-violet-600 hover:to-pink-600 shadow-xl hover:shadow-2xl border-2 border-white/20 rounded-2xl relative overflow-hidden group"
             >
-              <RefreshCw className={`w-5 h-5 ${autoPainMode ? 'animate-spin' : 'animate-spin-slow'}`} />
-              {language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}
+              {autoPainMode ? (
+                <Zap className="w-6 h-6 text-yellow-300 animate-pulse" />
+              ) : (
+                <RefreshCw className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" />
+              )}
+              <span className="relative z-10">{language === 'zh' ? '刷新我的痛苦' : 'Refresh My Pain'}</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-white/20 to-pink-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
             </Button>
             
             <FortuneCookie />
@@ -159,17 +177,22 @@ export function TextCheck() {
         </div>
       </div>
 
-      <footer className="w-full py-8 px-4 bg-gradient-to-t from-white/80 to-transparent backdrop-blur-sm border-t">
+      {/* Fixed positioned components */}
+      <MusicPlayer />
+      <MemesViewer />
+      <Newsletter />
+
+      <footer className="w-full py-8 px-4 bg-gradient-to-r from-pink-800/95 to-violet-800/95 backdrop-blur-md border-t border-white/10 shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
         <div className="max-w-2xl mx-auto text-center space-y-4">
           <a
-            href="https://example.com/store"
+            href="https://instagram.com/your-instagram"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-100 to-violet-100 hover:from-pink-200 hover:to-violet-200 text-gray-700 font-medium transition-all hover:scale-105 shadow-sm hover:shadow-md"
+            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-500/80 to-violet-500/80 hover:from-pink-500 hover:to-violet-500 text-white font-medium transition-all hover:scale-105 shadow-md hover:shadow-xl border border-white/20"
           >
-            {language === 'zh' ? '需要心理咨询？或者T恤？→' : 'Need therapy? Or a t-shirt? →'}
+            {language === 'zh' ? '购买我们的痛苦T恤 →' : 'Get our Pain T-shirts →'}
           </a>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-white/70">
             {language === 'zh' ? '自2025年起每日提供被拒绝的痛苦' : 'Daily doses of rejection since 2025'}
           </p>
         </div>
