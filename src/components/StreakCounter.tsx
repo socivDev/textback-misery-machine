@@ -40,22 +40,29 @@ export function StreakCounter({ streak }: { streak: number }) {
     return "🌟";
   };
 
+  const getAchievementAnimation = (delay: number) => {
+    return `animate-[bounce_1s_ease-in-out_infinite] delay-[${delay}ms]`;
+  };
+
   return (
     <Button
       variant="outline"
       onClick={() => setShowDialog(true)}
-      className={`group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-300 ${animateButton ? 'animate-[pulse_0.5s_ease-in-out_3]' : ''} py-4 px-6`}
+      className={`group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-500 ${animateButton ? 'animate-[pulse_0.5s_ease-in-out_3]' : ''} py-4 px-6 overflow-hidden`}
     >
-      <div className="flex items-center gap-2">
-        <Flame className={`w-5 h-5 text-yellow-300 ${animateButton ? 'animate-[bounce_0.5s_ease-in-out_infinite]' : 'group-hover:scale-110 transition-transform'}`} />
-        <span className="font-bold">
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 animate-pulse" />
+      <div className="relative flex items-center gap-2">
+        <Flame className={`w-5 h-5 text-yellow-300 ${
+          animateButton ? 'animate-[bounce_0.5s_ease-in-out_infinite]' : 'group-hover:scale-110 transition-transform'
+        }`} />
+        <span className="font-bold group-hover:scale-105 transition-transform">
           {language === 'zh' ? `连续: ${streak} 天` : `${streak} Day Streak`}
         </span>
         {streak >= 3 && (
-          <Star className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-spin' : 'animate-pulse'}`} />
+          <Star className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-spin' : 'animate-bounce-slow'}`} />
         )}
         {streak >= 7 && (
-          <Trophy className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-bounce' : 'animate-pulse'}`} />
+          <Trophy className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-bounce' : 'animate-float'}`} />
         )}
       </div>
       
@@ -73,12 +80,12 @@ export function StreakCounter({ streak }: { streak: number }) {
           </DialogHeader>
           <div className="space-y-6 p-4">
             <div className="flex justify-center">
-              <div className={`text-6xl ${isNew ? 'animate-[bounce_1s_ease-in-out_infinite]' : 'animate-[bounce_2s_ease-in-out_infinite]'}`}>
+              <div className={`text-6xl ${isNew ? 'animate-[bounce_1s_ease-in-out_infinite]' : 'animate-float'}`}>
                 {getStreakEmoji()}
               </div>
             </div>
             <div className="text-center space-y-4">
-              <h3 className="text-xl font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-transparent bg-clip-text">
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-transparent bg-clip-text animate-pulse">
                 {language === 'zh' 
                   ? `已连续沉浸在痛苦中 ${streak} 天`
                   : `${streak} Days of Consistent Pain`}
@@ -91,22 +98,22 @@ export function StreakCounter({ streak }: { streak: number }) {
               
               <div className="flex flex-wrap gap-2 justify-center">
                 {streak >= 3 && (
-                  <Badge className="bg-gradient-to-r from-orange-100 to-yellow-200 text-orange-700 border border-orange-300 px-3 py-1">
-                    <Star className="w-3 h-3 mr-1 text-yellow-500" />
+                  <Badge className={`bg-gradient-to-r from-orange-100 to-yellow-200 text-orange-700 border border-orange-300 px-3 py-1 transition-all duration-300 hover:scale-105 ${getAchievementAnimation(0)}`}>
+                    <Star className="w-3 h-3 mr-1 text-yellow-500 animate-spin-slow" />
                     {language === 'zh' ? "初级痛苦" : "Pain Beginner"}
                   </Badge>
                 )}
                 
                 {streak >= 5 && (
-                  <Badge className="bg-gradient-to-r from-orange-200 to-red-200 text-orange-700 border border-orange-300 px-3 py-1">
-                    <Flame className="w-3 h-3 mr-1 text-orange-500" />
+                  <Badge className={`bg-gradient-to-r from-orange-200 to-red-200 text-orange-700 border border-orange-300 px-3 py-1 transition-all duration-300 hover:scale-105 ${getAchievementAnimation(200)}`}>
+                    <Flame className="w-3 h-3 mr-1 text-orange-500 animate-pulse" />
                     {language === 'zh' ? "痛苦专家" : "Pain Expert"}
                   </Badge>
                 )}
                 
                 {streak >= 10 && (
-                  <Badge className="bg-gradient-to-r from-yellow-200 to-amber-300 text-amber-700 border border-yellow-400 px-3 py-1">
-                    <Trophy className="w-3 h-3 mr-1 text-amber-500" />
+                  <Badge className={`bg-gradient-to-r from-yellow-200 to-amber-300 text-amber-700 border border-yellow-400 px-3 py-1 transition-all duration-300 hover:scale-105 ${getAchievementAnimation(400)}`}>
+                    <Trophy className="w-3 h-3 mr-1 text-amber-500 animate-bounce" />
                     {language === 'zh' ? "痛苦大师" : "Pain Master"}
                   </Badge>
                 )}
