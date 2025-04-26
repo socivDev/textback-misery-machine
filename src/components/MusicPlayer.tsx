@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, SkipBack, SkipForward, Music2, Volume2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Music2, Volume2, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 // Define the song list
 const songsList = [
@@ -29,7 +30,7 @@ export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [volume, setVolume] = useState(50);
-  const [expanded, setExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentSong = songsList[currentSongIndex];
@@ -68,21 +69,38 @@ export function MusicPlayer() {
   };
 
   return (
-    <div className="fixed bottom-20 right-4 z-50 w-80">
-      <div className="bg-gradient-to-r from-pink-600/85 to-violet-600/85 backdrop-blur-md rounded-xl shadow-xl border border-white/20 overflow-hidden">
-        <ScrollArea className="h-[300px]">
-          <div className="p-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Music2 className={`w-5 h-5 text-white ${isPlaying ? 'animate-pulse' : ''}`} />
-                <div className="text-white space-y-1">
-                  <h3 className="font-semibold text-sm">{currentSong.title}</h3>
-                  <p className="text-xs text-white/70">{currentSong.artist}</p>
-                </div>
+    <div 
+      className={cn(
+        "fixed bottom-20 right-4 z-50 w-80 transition-all duration-300 ease-in-out",
+        isExpanded ? "h-[400px]" : "h-[100px]"
+      )}
+    >
+      <div className="bg-gradient-to-r from-pink-600/85 to-violet-600/85 backdrop-blur-md rounded-xl shadow-xl border border-white/20 overflow-hidden h-full flex flex-col">
+        <div 
+          className="p-4 cursor-pointer border-b border-white/10 bg-black/20"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center ${isPlaying ? 'animate-pulse' : ''}`}>
+                <Music2 className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-white space-y-0.5">
+                <h3 className="font-semibold text-sm">{currentSong.title}</h3>
+                <p className="text-xs text-white/70">{currentSong.artist}</p>
               </div>
             </div>
+            {isExpanded ? (
+              <ChevronDown className="w-5 h-5 text-white/80" />
+            ) : (
+              <ChevronUp className="w-5 h-5 text-white/80" />
+            )}
+          </div>
+        </div>
 
-            <div className="space-y-4">
+        {isExpanded && (
+          <ScrollArea className="flex-1 px-4 py-2">
+            <div className="space-y-2">
               {songsList.map((song, index) => (
                 <button
                   key={index}
@@ -90,35 +108,36 @@ export function MusicPlayer() {
                     setCurrentSongIndex(index);
                     setIsPlaying(true);
                   }}
-                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-300 ${
+                  className={cn(
+                    "w-full text-left p-3 rounded-lg transition-all duration-300",
                     currentSongIndex === index 
                       ? 'bg-white/20 shadow-lg scale-[1.02]' 
-                      : 'hover:bg-white/10'
-                  } group`}
+                      : 'hover:bg-white/10',
+                    "group flex items-center gap-3"
+                  )}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-all ${
-                      currentSongIndex === index && isPlaying ? 'animate-spin-slow' : ''
-                    }`}>
-                      {currentSongIndex === index && isPlaying ? (
-                        <Pause className="w-4 h-4 text-white" />
-                      ) : (
-                        <Play className="w-4 h-4 text-white ml-0.5" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-white text-sm font-medium">{song.title}</p>
-                      <p className="text-white/60 text-xs">{song.artist}</p>
-                    </div>
+                  <div className={cn(
+                    "w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-all",
+                    currentSongIndex === index && isPlaying ? 'animate-spin-slow' : ''
+                  )}>
+                    {currentSongIndex === index && isPlaying ? (
+                      <Pause className="w-4 h-4 text-white" />
+                    ) : (
+                      <Play className="w-4 h-4 text-white ml-0.5" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-medium">{song.title}</p>
+                    <p className="text-white/60 text-xs">{song.artist}</p>
                   </div>
                 </button>
               ))}
             </div>
-          </div>
-        </ScrollArea>
+          </ScrollArea>
+        )}
 
         <div className="border-t border-white/10 p-4 space-y-4 bg-black/20">
-          <div className="flex justify-center items-center space-x-4">
+          <div className="flex justify-center items-center gap-4">
             <Button 
               variant="ghost" 
               size="icon" 
