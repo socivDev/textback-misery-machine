@@ -14,7 +14,7 @@ export function Navbar({ autoPainMode, setAutoPainMode, streak }: {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-pink-700/95 to-violet-700/95 backdrop-blur-lg z-50 py-4 px-4 border-b border-white/20 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-pink-800/95 to-violet-800/95 backdrop-blur-lg z-50 py-4 px-4 border-b border-white/20 shadow-lg">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md p-2 rounded-full shadow-inner">
@@ -44,16 +44,6 @@ export function Navbar({ autoPainMode, setAutoPainMode, streak }: {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 bg-white/10 backdrop-blur-md py-1 px-3 rounded-full border border-white/10">
-            <Star className="w-4 h-4 text-yellow-300" />
-            <span className="text-white/90 font-medium">
-              {language === 'zh' ? `连续: ${streak}天` : `${streak}d streak`}
-            </span>
-            {streak >= 5 && (
-              <span className="text-lg animate-pulse">🔥</span>
-            )}
-          </div>
-          
           <Button 
             variant="outline"
             size="sm"

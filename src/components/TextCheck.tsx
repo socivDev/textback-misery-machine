@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { excuses, responses } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, ZapOff, Zap } from "lucide-react";
+import { RefreshCw, ZapOff, Zap, Instagram } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { Navbar } from "./Navbar";
@@ -171,6 +170,7 @@ export function TextCheck() {
             </Button>
             
             <FortuneCookie />
+            <MemesViewer />
           </div>
           
           <ShareInstructions />
@@ -179,18 +179,18 @@ export function TextCheck() {
 
       {/* Fixed positioned components */}
       <MusicPlayer />
-      <MemesViewer />
       <Newsletter />
 
-      <footer className="w-full py-8 px-4 bg-gradient-to-r from-pink-800/95 to-violet-800/95 backdrop-blur-md border-t border-white/10 shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
+      <footer className="w-full py-8 px-4 bg-gradient-to-r from-pink-900/95 to-violet-900/95 backdrop-blur-md border-t border-white/10 shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
         <div className="max-w-2xl mx-auto text-center space-y-4">
           <a
             href="https://instagram.com/your-instagram"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-pink-500/80 to-violet-500/80 hover:from-pink-500 hover:to-violet-500 text-white font-medium transition-all hover:scale-105 shadow-md hover:shadow-xl border border-white/20"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500/80 to-violet-500/80 hover:from-pink-500 hover:to-violet-500 text-white font-medium transition-all hover:scale-105 shadow-md hover:shadow-xl border border-white/20"
           >
-            {language === 'zh' ? '购买我们的痛苦T恤 →' : 'Get our Pain T-shirts →'}
+            <Instagram className="w-5 h-5" />
+            {language === 'zh' ? '关注我们的 Instagram' : 'Follow us on Instagram'}
           </a>
           <p className="text-sm text-white/70">
             {language === 'zh' ? '自2025年起每日提供被拒绝的痛苦' : 'Daily doses of rejection since 2025'}

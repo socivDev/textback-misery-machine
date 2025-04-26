@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Bell, Star, Award, Flame, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -42,30 +41,24 @@ export function StreakCounter({ streak }: { streak: number }) {
   };
 
   return (
-    <>
-      <Button
-        variant="outline"
-        onClick={() => setShowDialog(true)}
-        className={`group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-300 ${animateButton ? 'animate-[pulse_0.5s_ease-in-out_3]' : ''}`}
-      >
-        <div className="flex items-center gap-2">
-          <Flame className={`w-5 h-5 text-yellow-300 ${animateButton ? 'animate-[bounce_0.5s_ease-in-out_infinite]' : 'group-hover:scale-110 transition-transform'}`} />
-          <span className="font-bold">
-            {language === 'zh' ? `连续: ${streak} 天` : `${streak} Day Streak`}
-          </span>
-          {streak >= 3 && (
-            <Star className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-spin' : 'animate-pulse'}`} />
-          )}
-          {streak >= 7 && (
-            <Trophy className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-bounce' : 'animate-pulse'}`} />
-          )}
-        </div>
-        
-        {animateButton && (
-          <span className="absolute -inset-1 rounded-md bg-gradient-to-r from-orange-400/20 to-red-500/20 animate-ping"></span>
+    <Button
+      variant="outline"
+      onClick={() => setShowDialog(true)}
+      className={`group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-300 ${animateButton ? 'animate-[pulse_0.5s_ease-in-out_3]' : ''} py-4 px-6`}
+    >
+      <div className="flex items-center gap-2">
+        <Flame className={`w-5 h-5 text-yellow-300 ${animateButton ? 'animate-[bounce_0.5s_ease-in-out_infinite]' : 'group-hover:scale-110 transition-transform'}`} />
+        <span className="font-bold">
+          {language === 'zh' ? `连续: ${streak} 天` : `${streak} Day Streak`}
+        </span>
+        {streak >= 3 && (
+          <Star className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-spin' : 'animate-pulse'}`} />
         )}
-      </Button>
-
+        {streak >= 7 && (
+          <Trophy className={`w-4 h-4 text-yellow-300 ${animateButton ? 'animate-bounce' : 'animate-pulse'}`} />
+        )}
+      </div>
+      
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="bg-gradient-to-b from-orange-50 to-red-50 border-2 border-orange-200">
           <DialogHeader>
@@ -132,6 +125,6 @@ export function StreakCounter({ streak }: { streak: number }) {
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </Button>
   );
 }

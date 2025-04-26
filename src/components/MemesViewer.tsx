@@ -41,12 +41,12 @@ export function MemesViewer() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
-          size="sm"
-          className="fixed bottom-20 left-4 z-50 bg-gradient-to-r from-pink-600/90 to-violet-600/90 text-white border-white/20 hover:bg-gradient-to-r hover:from-pink-700/90 hover:to-violet-700/90 hover:border-white/40 shadow-lg"
+          variant="outline" 
+          size="lg"
+          className="text-lg font-semibold px-8 py-6 h-auto gap-2 bg-gradient-to-r from-pink-500/20 to-violet-500/20 hover:from-pink-500/30 hover:to-violet-500/30 text-gray-800 border-2 hover:border-pink-300 hover:scale-110 transition-transform backdrop-blur-sm shadow-md hover:shadow-lg"
         >
-          <Images className="w-5 h-5 mr-2" />
-          {language === 'zh' ? '治愈模因' : 'Comfort Memes'}
+          <Images className="w-5 h-5" />
+          {language === 'zh' ? '治愈你的痛苦' : 'Cure Your Pain'}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl bg-gradient-to-b from-pink-50 to-violet-50 border-2 border-pink-200/50">
