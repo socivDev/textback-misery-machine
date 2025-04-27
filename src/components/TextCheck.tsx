@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { excuses, responses } from "@/data/excuses";
 import { Button } from "@/components/ui/button";
@@ -130,9 +131,24 @@ export function TextCheck() {
     }, 300);
   };
 
+  const showShop = () => {
+    // This is a placeholder function to satisfy the Navbar props
+    console.log("Shop would show here");
+  };
+  
+  const showAchievements = () => {
+    // This is a placeholder function to satisfy the Navbar props
+    console.log("Achievements would show here");
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-[Poppins] bg-gradient-to-b from-pink-50 to-violet-100">
-      <Navbar autoPainMode={autoPainMode} setAutoPainMode={setAutoPainMode} streak={streak} />
+      <Navbar 
+        showShop={showShop} 
+        showAchievements={showAchievements}
+        cookies={0}
+        coins={0}
+      />
       
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="space-y-8 text-center max-w-2xl mx-auto">
