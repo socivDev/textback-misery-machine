@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Bell, Star, Award, Flame, Trophy, Gift, Sparkles, BadgeCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "./ui/button";
@@ -126,13 +126,11 @@ export function StreakCounter({ streak }: { streak: number }) {
     <Button
       variant="outline"
       onClick={() => setShowDialog(true)}
-      className={`group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-500 ${animateButton ? 'animate-pulse' : ''} py-4 px-6 overflow-hidden`}
+      className="group relative bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white border-2 border-orange-300 shadow-lg hover:shadow-xl transition-all duration-500 py-4 px-6 overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 animate-[pulse_4s_ease-in-out_infinite]" />
       <div className="relative flex items-center gap-2">
-        <Flame className={`w-5 h-5 text-yellow-300 ${
-          animateButton ? 'animate-bounce' : 'group-hover:scale-110 transition-transform'
-        }`} />
+        <Flame className="w-5 h-5 text-yellow-300 group-hover:scale-110 transition-transform" />
         <span className="font-bold group-hover:scale-105 transition-transform">
           {language === 'zh' ? `连续: ${streak} 天` : `${streak} Day Streak`}
         </span>
@@ -162,7 +160,7 @@ export function StreakCounter({ streak }: { streak: number }) {
             </DialogDescription>
           </DialogHeader>
           
-          <div className={`space-y-6 p-4 transition-all duration-500 ${dialogEntering ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+          <div className="space-y-6 p-4 transition-all duration-500">
             <div className="flex justify-center">
               <div className="text-6xl relative">
                 <span className={`absolute -inset-1 rounded-full bg-orange-300/30 blur-md ${isNew ? 'animate-pulse' : ''}`}></span>
@@ -254,6 +252,17 @@ export function StreakCounter({ streak }: { streak: number }) {
                 </div>
               )}
             </div>
+          </div>
+          
+          {/* Add DialogClose button */}
+          <div className="mt-4 flex justify-center">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowDialog(false)} 
+              className="bg-orange-100 hover:bg-orange-200 border-orange-300 text-orange-800"
+            >
+              {language === 'zh' ? "关闭" : "Close"}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

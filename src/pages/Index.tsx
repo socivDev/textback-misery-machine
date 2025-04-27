@@ -1,11 +1,11 @@
 
-import { TextCheck } from "@/components/TextCheck";
+import { CookieClicker } from "@/components/CookieClicker";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const Index = () => {
   return (
     <LanguageProvider>
-      <TextCheck />
+      <CookieClicker />
     </LanguageProvider>
   );
 };
